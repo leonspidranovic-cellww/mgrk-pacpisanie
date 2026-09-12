@@ -1,0 +1,2074 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1e5aa8">
+<title>Расписание МГРК</title>
+<style>
+  :root {
+    --bg:#0d0d0d; --card:#1a1a1a; --text:#fff; --text-muted:#aaa;
+    --accent:#4d8fff; --accent-text:#fff; --border:#2a2a2a;
+    --shadow:rgba(77,143,255,0.3); --success:#2e7d32; --warn:#e65100; --danger:#c62828;
+    --pattern: rgba(77,143,255,0.10);
+  }
+  body[data-theme="black-white"]  { --bg:#0d0d0d;--card:#1a1a1a;--text:#fff;--text-muted:#aaa;--accent:#fff;--accent-text:#000;--border:#2a2a2a;--shadow:rgba(255,255,255,.15);--pattern:rgba(255,255,255,.06);}
+  body[data-theme="black-grey"]   { --bg:#0d0d0d;--card:#1a1a1a;--text:#f0f0f0;--text-muted:#999;--accent:#9e9e9e;--accent-text:#000;--border:#2a2a2a;--shadow:rgba(158,158,158,.25);--pattern:rgba(158,158,158,.08);}
+  body[data-theme="black-red"]    { --bg:#0d0d0d;--card:#1a1a1a;--text:#fff;--text-muted:#aaa;--accent:#e53935;--accent-text:#fff;--border:#2a2a2a;--shadow:rgba(229,57,53,.3);--pattern:rgba(229,57,53,.1);}
+  body[data-theme="black-orange"] { --bg:#0d0d0d;--card:#1a1a1a;--text:#fff;--text-muted:#aaa;--accent:#ff9800;--accent-text:#000;--border:#2a2a2a;--shadow:rgba(255,152,0,.3);--pattern:rgba(255,152,0,.1);}
+  body[data-theme="black-yellow"] { --bg:#0d0d0d;--card:#1a1a1a;--text:#fff;--text-muted:#aaa;--accent:#fdd835;--accent-text:#000;--border:#2a2a2a;--shadow:rgba(253,216,53,.3);--pattern:rgba(253,216,53,.1);}
+  body[data-theme="black-green"]  { --bg:#0d0d0d;--card:#1a1a1a;--text:#fff;--text-muted:#aaa;--accent:#43a047;--accent-text:#fff;--border:#2a2a2a;--shadow:rgba(67,160,71,.3);--pattern:rgba(67,160,71,.1);}
+  body[data-theme="black-lime"]   { --bg:#0d0d0d;--card:#1a1a1a;--text:#fff;--text-muted:#aaa;--accent:#c6ff00;--accent-text:#000;--border:#2a2a2a;--shadow:rgba(198,255,0,.3);--pattern:rgba(198,255,0,.12);}
+  body[data-theme="black-cyan"]   { --bg:#0d0d0d;--card:#1a1a1a;--text:#fff;--text-muted:#aaa;--accent:#4fc3f7;--accent-text:#000;--border:#2a2a2a;--shadow:rgba(79,195,247,.3);--pattern:rgba(79,195,247,.12);}
+  body[data-theme="black-blue"]   { --bg:#0d0d0d;--card:#1a1a1a;--text:#fff;--text-muted:#aaa;--accent:#4d8fff;--accent-text:#fff;--border:#2a2a2a;--shadow:rgba(77,143,255,.3);--pattern:rgba(77,143,255,.1);}
+  body[data-theme="black-purple"] { --bg:#0d0d0d;--card:#1a1a1a;--text:#fff;--text-muted:#aaa;--accent:#9c27b0;--accent-text:#fff;--border:#2a2a2a;--shadow:rgba(156,39,176,.3);--pattern:rgba(156,39,176,.1);}
+  body[data-theme="black-pink"]   { --bg:#0d0d0d;--card:#1a1a1a;--text:#fff;--text-muted:#aaa;--accent:#ec407a;--accent-text:#fff;--border:#2a2a2a;--shadow:rgba(236,64,122,.3);--pattern:rgba(236,64,122,.1);}
+  body[data-theme="black-neon"]   { --bg:#050505;--card:#0f1a0f;--text:#e8ffe8;--text-muted:#8fbf8f;--accent:#39ff14;--accent-text:#000;--border:#1a3a1a;--shadow:rgba(57,255,20,.5);--pattern:rgba(57,255,20,.15);}
+  body[data-theme="black-future"] { --bg:#000814;--card:#001428;--text:#dff9ff;--text-muted:#6fa8bf;--accent:#00e5ff;--accent-text:#000;--border:#003a55;--shadow:rgba(0,229,255,.5);--pattern:rgba(0,229,255,.15);}
+  body[data-theme="black-2099"]   { --bg:#0a0014;--card:#1a0030;--text:#ffe8ff;--text-muted:#b080c0;--accent:#ff00ff;--accent-text:#000;--border:#3d0060;--shadow:rgba(255,0,255,.5);--pattern:rgba(255,0,255,.15);}
+  body[data-theme="black-bw"]     { --bg:#000;--card:#0a0a0a;--text:#fff;--text-muted:#666;--accent:#fff;--accent-text:#000;--border:#1a1a1a;--shadow:rgba(255,255,255,.1);--pattern:rgba(255,255,255,.04);}
+
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { margin:0; padding:0; height:100%; }
+  .hidden { display:none !important; }
+  body {
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg); color:var(--text);
+    transition: background .25s, color .25s;
+    overflow-x:hidden; position:relative; min-height:100vh;
+  }
+  body::before {
+    content:''; position:fixed; inset:0; z-index:-2;
+    background-image: radial-gradient(circle, var(--pattern) 1.5px, transparent 1.5px);
+    background-size:22px 22px; pointer-events:none;
+  }
+  body::after {
+    content:''; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.6;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 0%, var(--pattern) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 100% 100%, var(--pattern) 0%, transparent 60%);
+  }
+
+  /* ===== ПОЛУПРОЗРАЧНАЯ ШАПКА ===== */
+  header {
+    position:sticky; top:0; z-index:10;
+    background: color-mix(in srgb, var(--accent) 65%, transparent);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    color: #fff;
+    padding:14px 16px;
+    padding-top:calc(14px + env(safe-area-inset-top));
+    box-shadow:0 2px 8px var(--shadow);
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    transition: background .25s;
+  }
+  header h1 { margin:0; font-size:18px; font-weight:600; display:flex; align-items:center; gap:8px; text-shadow: 0 1px 2px rgba(0,0,0,.3); }
+  header .sub { font-size:12px; opacity:.9; margin-top:3px; text-shadow: 0 1px 2px rgba(0,0,0,.3); }
+
+  main { padding:12px; padding-bottom:calc(80px + env(safe-area-inset-bottom)); max-width:640px; margin:0 auto; }
+  .tab { display:none; }
+  .tab.active { display:block; }
+
+  .days { display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; scrollbar-width:none; }
+  .days::-webkit-scrollbar { display:none; }
+  .day-btn {
+    flex:0 0 auto; padding:8px 14px; border-radius:20px;
+    background:var(--card); color:var(--text-muted);
+    border:1px solid var(--border); font-size:13px; font-weight:600;
+    cursor:pointer; transition:.2s; user-select:none;
+  }
+  .day-btn.active { background:var(--accent); color:var(--accent-text); border-color:var(--accent); }
+  .day-btn.today { border-color:var(--accent); border-width:2px; }
+
+  .day-title { display:flex; justify-content:space-between; align-items:center; margin:16px 4px 8px; }
+  .day-title h2 { font-size:20px; margin:0; }
+  .badge { font-size:11px; padding:4px 10px; border-radius:12px; background:var(--accent); color:var(--accent-text); font-weight:600; }
+
+  .lesson {
+    background:var(--card); border-radius:14px; padding:14px; margin-bottom:10px;
+    display:flex; gap:14px; align-items:center;
+    box-shadow:0 1px 3px var(--shadow); border:1px solid var(--border);
+    animation: fadeIn .25s ease;
+  }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+  .lesson .num {
+    flex:0 0 44px; height:44px; border-radius:12px;
+    background:var(--accent); color:var(--accent-text);
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; font-weight:700;
+  }
+  .lesson .info { flex:1; min-width:0; }
+  .lesson .subject { font-size:15px; font-weight:600; margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .lesson .meta { font-size:12px; color:var(--text-muted); display:flex; gap:10px; flex-wrap:wrap; }
+
+  .empty { background:var(--card); border:1px dashed var(--border); border-radius:14px; padding:32px 16px; text-align:center; color:var(--text-muted); font-size:14px; }
+  .empty-ico { font-size:44px; margin-bottom:10px; opacity:.7; }
+
+  .sunday-hero { background:var(--card); border-radius:20px; padding:40px 20px; text-align:center; box-shadow:0 4px 16px var(--shadow); border:1px solid var(--border); margin-top:20px; }
+  .sunday-hero .emoji { font-size:64px; margin-bottom:16px; }
+  .sunday-hero h2 { font-size:22px; margin:0 0 10px; }
+  .sunday-hero p { color:var(--text-muted); font-size:14px; margin:0 0 20px; line-height:1.5; }
+  .sunday-hero .counter { display:flex; justify-content:center; gap:8px; margin-top:20px; }
+  .sunday-hero .counter > div { background:var(--accent); color:var(--accent-text); padding:10px 14px; border-radius:12px; min-width:56px; }
+  .sunday-hero .counter .num { font-size:22px; font-weight:700; }
+  .sunday-hero .counter .lbl { font-size:10px; opacity:.85; text-transform:uppercase; }
+
+  .settings-group { background:var(--card); border-radius:14px; padding:4px 0; margin-bottom:14px; border:1px solid var(--border); box-shadow:0 1px 3px var(--shadow); }
+  .settings-group h3 { font-size:12px; text-transform:uppercase; color:var(--text-muted); margin:0; padding:12px 16px 6px; letter-spacing:.5px; }
+
+  .theme-item { display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer; border-top:1px solid var(--border); transition:background .15s; }
+  .theme-item:active { background:var(--border); }
+  .theme-item .swatches { display:flex; gap:3px; flex-shrink:0; }
+  .theme-item .swatch { width:18px; height:18px; border-radius:6px; border:1px solid rgba(0,0,0,.1); }
+  .theme-item .name { flex:1; font-size:14px; }
+  .theme-item .check { color:var(--accent); font-size:18px; font-weight:700; visibility:hidden; }
+  .theme-item.selected .check { visibility:visible; }
+
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:12px 18px; border-radius:12px; border:none; background:var(--accent); color:var(--accent-text); font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:.15s; }
+  .btn:active { transform:scale(.97); }
+  .btn.block { display:flex; width:100%; }
+  .btn.ghost { background:transparent; color:var(--text); border:1px solid var(--border); }
+  .btn.danger { background:var(--danger); color:#fff; }
+  .btn.success { background:var(--success); color:#fff; }
+  .btn.warn { background:var(--warn); color:#fff; }
+  .btn.small { padding:8px 12px; font-size:13px; }
+
+  .bell { background:var(--card); border-radius:12px; padding:14px; margin-bottom:8px; display:flex; align-items:center; gap:14px; border:1px solid var(--border); }
+  .bell .num { flex:0 0 40px; height:40px; border-radius:10px; background:var(--accent); color:var(--accent-text); display:flex; align-items:center; justify-content:center; font-weight:700; }
+  .bell .time { font-weight:600; font-size:15px; }
+  .bell .brk { color:var(--text-muted); font-size:12px; margin-top:2px; }
+  .bell.lunch { background: linear-gradient(135deg, color-mix(in srgb, var(--warn) 25%, var(--card)), var(--card)); border-color: var(--warn); }
+  .bell.lunch .num { background: var(--warn); color:#fff; }
+
+  .profile-card { background:var(--card); border-radius:20px; padding:24px 20px; text-align:center; box-shadow:0 4px 16px var(--shadow); border:1px solid var(--border); }
+  .profile-avatar { width:80px; height:80px; border-radius:50%; margin:0 auto 14px; background:var(--accent); color:var(--accent-text); display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700; position:relative; }
+  .profile-avatar .editor-star {
+    position:absolute; bottom:-4px; right:-4px;
+    width:28px; height:28px; border-radius:50%;
+    background:var(--warn); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; border:3px solid var(--card);
+  }
+  .profile-name { font-size:20px; font-weight:700; margin-bottom:4px; }
+  .profile-group { color:var(--text-muted); font-size:14px; margin-bottom:18px; }
+  .profile-row { display:flex; justify-content:space-between; padding:10px 0; border-top:1px solid var(--border); font-size:14px; }
+  .profile-row:first-of-type { border-top:none; }
+  .profile-row .lbl { color:var(--text-muted); }
+  .profile-row .val { font-weight:600; text-align:right; }
+
+  .status-badge { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:600; margin-top:8px; }
+  .status-badge.approved { background:rgba(46,125,50,.15); color:var(--success); }
+  .status-badge.pending  { background:rgba(230,81,0,.15); color:var(--warn); }
+  .status-badge.rejected { background:rgba(198,40,40,.15); color:var(--danger); }
+  .status-badge.editor   { background:rgba(230,81,0,.15); color:var(--warn); margin-left:6px; }
+
+  nav {
+    position:fixed; bottom:0; left:0; right:0;
+    background: color-mix(in srgb, var(--card) 85%, transparent);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border-top:1px solid var(--border);
+    display:flex; padding-bottom:env(safe-area-inset-bottom); z-index:20;
+    box-shadow:0 -2px 8px var(--shadow);
+  }
+  nav button {
+    flex:1; background:none; border:none;
+    padding:10px 4px 12px; display:flex; flex-direction:column; align-items:center; gap:2px;
+    color:var(--text-muted); font-size:11px; cursor:pointer; transition:color .2s; font-family:inherit;
+  }
+  nav button .icon { font-size:20px; }
+  nav button.active { color:var(--accent); font-weight:600; }
+
+  .overlay {
+    position:fixed; inset:0; z-index:100;
+    background:var(--bg); overflow-y:auto;
+    padding:24px 20px;
+    padding-top:calc(24px + env(safe-area-inset-top));
+    padding-bottom:calc(24px + env(safe-area-inset-bottom));
+  }
+  .overlay.hidden { display:none; }
+  .overlay h2 { margin:0 0 8px; font-size:24px; }
+  .overlay p.sub { color:var(--text-muted); font-size:14px; margin:0 0 24px; line-height:1.5; }
+
+  #authOverlay { display:flex; align-items:center; justify-content:center; background:transparent; }
+  #authOverlay.hidden { display:none; }
+  .auth-box {
+    width:100%; max-width:420px; background:var(--card);
+    border-radius:24px; padding:28px 22px;
+    box-shadow:0 20px 60px var(--shadow), 0 1px 3px var(--shadow);
+    border:1px solid var(--border);
+  }
+  .auth-logo { width:72px; height:72px; border-radius:20px; background:var(--accent); color:var(--accent-text);
+    display:flex; align-items:center; justify-content:center; font-size:36px; margin:0 auto 16px;
+    box-shadow:0 8px 24px var(--shadow); }
+  .auth-title { text-align:center; font-size:22px; font-weight:700; margin-bottom:6px; }
+  .auth-subtitle { text-align:center; color:var(--text-muted); font-size:13px; margin-bottom:20px; line-height:1.4; }
+  .auth-tabs { display:flex; background:var(--bg); border-radius:14px; padding:4px; margin-bottom:20px; border:1px solid var(--border); }
+  .auth-tab { flex:1; padding:10px; border-radius:10px; text-align:center; font-size:13px; font-weight:600; color:var(--text-muted); cursor:pointer; transition:.15s; }
+  .auth-tab.active { background:var(--accent); color:var(--accent-text); box-shadow:0 2px 8px var(--shadow); }
+  .auth-form { display:none; }
+  .auth-form.active { display:block; animation:fadeIn .2s ease; }
+
+  .password-warning {
+    background: linear-gradient(135deg, rgba(198,40,40,.1), rgba(230,81,0,.1));
+    border: 1px solid rgba(198,40,40,.3);
+    border-radius:14px; padding:12px 14px; margin-bottom:14px;
+    display:flex; gap:10px; align-items:flex-start;
+  }
+  .password-warning .icon { font-size:22px; flex-shrink:0; line-height:1; }
+  .password-warning .text { font-size:11.5px; line-height:1.45; color:var(--danger); font-weight:700; letter-spacing:.2px; }
+  .password-warning .text small { display:block; font-weight:500; color:var(--text-muted); margin-top:3px; font-size:11px; letter-spacing:0; }
+
+  .password-field { position:relative; }
+  .password-field input { padding-right:48px; }
+  .password-toggle { position:absolute; right:6px; top:50%; transform:translateY(-50%); background:none; border:none;
+    font-size:18px; cursor:pointer; padding:8px 10px; color:var(--text-muted); font-family:inherit; }
+
+  .auth-divider { display:flex; align-items:center; gap:10px; margin:18px 0 14px; color:var(--text-muted); font-size:12px; }
+  .auth-divider::before, .auth-divider::after { content:''; flex:1; height:1px; background:var(--border); }
+  .auth-link { text-align:center; padding:12px; font-size:13px; color:var(--accent); font-weight:600; cursor:pointer; border-radius:12px; transition:background .15s; }
+  .auth-link:active { background:var(--bg); }
+
+  .id-reveal { background:linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, #000)); color:var(--accent-text);
+    border-radius:16px; padding:18px; margin:8px 0 16px; text-align:center; }
+  .id-reveal .lbl { font-size:11px; opacity:.85; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+  .id-reveal .val { font-family:monospace; font-size:22px; font-weight:700; letter-spacing:1px; }
+  .id-reveal .hint { font-size:11px; margin-top:10px; opacity:.85; line-height:1.4; }
+
+  #adminOverlay { padding:0; padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom); }
+  .admin-container { min-height:100vh; display:flex; flex-direction:column; }
+
+  .admin-header {
+    position:sticky; top:0; z-index:5;
+    background: color-mix(in srgb, var(--accent) 70%, transparent);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    color: #fff;
+    padding: 14px 16px;
+    box-shadow: 0 4px 20px var(--shadow);
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  .admin-header-row { display:flex; align-items:center; gap:12px; max-width:820px; margin:0 auto; }
+  .admin-avatar {
+    width:42px; height:42px; border-radius:12px;
+    background: rgba(255,255,255,.2);
+    border: 1px solid rgba(255,255,255,.25);
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px; flex-shrink:0;
+    backdrop-filter: blur(8px);
+  }
+  .admin-header-text { flex:1; min-width:0; }
+  .admin-header-text .t1 { font-weight:700; font-size:16px; line-height:1.2; text-shadow: 0 1px 2px rgba(0,0,0,.3); }
+  .admin-header-text .t2 { font-size:11.5px; opacity:.9; margin-top:2px; text-shadow: 0 1px 2px rgba(0,0,0,.3); }
+  .admin-close {
+    width:36px; height:36px; border-radius:10px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.2);
+    color: #fff;
+    cursor:pointer; font-size:16px;
+    display:flex; align-items:center; justify-content:center;
+    transition:.15s;
+  }
+  .admin-close:active { transform:scale(.92); background: rgba(255,255,255,.25); }
+
+  .admin-body { flex:1; padding: 14px 12px 100px; max-width:820px; width:100%; margin:0 auto; }
+
+  .admin-stats { display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; margin-bottom:14px; }
+  @media (min-width: 500px) { .admin-stats { grid-template-columns:repeat(4, 1fr); } }
+  .stat-card {
+    background:var(--card); border-radius:14px; padding:12px;
+    border:1px solid var(--border); box-shadow:0 1px 3px var(--shadow);
+    cursor:pointer; transition: transform .15s, border-color .15s;
+    position:relative; overflow:hidden;
+  }
+  .stat-card:active { transform:scale(.96); }
+  .stat-card .stat-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+  .stat-card .stat-icon { font-size:20px; }
+  .stat-card .stat-value { font-size:22px; font-weight:800; line-height:1; }
+  .stat-card .stat-label { font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-top:4px; font-weight:700; }
+  .stat-card.hot {
+    border-color: var(--warn);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--warn) 15%, var(--card)), var(--card));
+  }
+  .stat-card.hot .stat-value { color: var(--warn); }
+  .stat-card.editors {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, var(--card)), var(--card));
+  }
+  .stat-card .pulse-dot {
+    width:7px; height:7px; border-radius:50%; background:var(--warn);
+    box-shadow:0 0 0 0 rgba(230,81,0,.7);
+    animation: pulseDot 1.6s infinite;
+  }
+  @keyframes pulseDot {
+    0% { box-shadow: 0 0 0 0 rgba(230,81,0,.7); }
+    70% { box-shadow: 0 0 0 8px rgba(230,81,0,0); }
+    100% { box-shadow: 0 0 0 0 rgba(230,81,0,0); }
+  }
+
+  .maint-bar {
+    display:flex; align-items:center; gap:12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 3px var(--shadow);
+    transition: .25s;
+  }
+  .maint-bar.on {
+    background: linear-gradient(135deg, var(--warn), #ff8a3d);
+    color: #fff; border-color: transparent;
+    box-shadow: 0 4px 16px rgba(230,81,0,.35);
+  }
+  .maint-bar .mi {
+    width:38px; height:38px; border-radius:11px;
+    background: var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    font-size:19px; flex-shrink:0;
+  }
+  .maint-bar.on .mi { background: rgba(255,255,255,.25); }
+  .maint-bar .mt { flex:1; min-width:0; }
+  .maint-bar .mt .t1 { font-weight:700; font-size:14px; }
+  .maint-bar .mt .t2 { font-size:11.5px; color: var(--text-muted); margin-top:2px; }
+  .maint-bar.on .mt .t2 { color: rgba(255,255,255,.9); }
+  .maint-bar .mt .t2 .by { font-weight:600; }
+  .maint-toggle {
+    padding: 9px 15px; border-radius: 11px; border: none;
+    font-weight: 700; font-size: 12.5px; cursor: pointer;
+    font-family: inherit; white-space: nowrap;
+    background: var(--accent); color: var(--accent-text);
+    transition:.15s; flex-shrink:0;
+  }
+  .maint-bar.on .maint-toggle { background:#fff; color: var(--warn); }
+  .maint-toggle:active { transform:scale(.95); }
+
+  .admin-tabs {
+    display:flex; gap:6px;
+    overflow-x:auto; padding: 4px 4px 10px;
+    margin: 0 -4px 12px;
+    scrollbar-width:none;
+  }
+  .admin-tabs::-webkit-scrollbar { display:none; }
+  .admin-tab {
+    flex:0 0 auto; display:flex; align-items:center; gap:6px;
+    padding:9px 14px; border-radius:20px;
+    background:var(--card); color:var(--text-muted);
+    border:1px solid var(--border); font-size:13px; font-weight:600;
+    cursor:pointer; white-space:nowrap; transition:.15s;
+  }
+  .admin-tab.active { background:var(--accent); color:var(--accent-text); border-color:var(--accent); box-shadow:0 4px 12px var(--shadow); }
+  .admin-tab .cnt {
+    background:var(--border); color:var(--text);
+    padding:1px 7px; border-radius:10px; font-size:11px; font-weight:700;
+  }
+  .admin-tab.active .cnt { background:rgba(255,255,255,.25); color:var(--accent-text); }
+  .admin-tab .cnt.hot { background:var(--warn); color:#fff; }
+  .admin-tab.active .cnt.hot { background:#fff; color:var(--warn); }
+
+  .admin-toolbar { display:flex; gap:8px; margin-bottom:12px; }
+  .admin-toolbar input {
+    flex:1; padding:12px 14px; border-radius:12px;
+    border:1px solid var(--border); background:var(--card);
+    color:var(--text); font-family:inherit; font-size:14px;
+    outline:none; transition:border .15s;
+  }
+  .admin-toolbar input:focus { border-color:var(--accent); }
+  .admin-toolbar .add-btn {
+    width:44px; height:44px; border-radius:12px; border:none;
+    background:var(--accent); color:var(--accent-text);
+    font-size:24px; font-weight:300; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    transition:.15s;
+  }
+  .admin-toolbar .add-btn:active { transform:scale(.92); }
+
+  .chips { display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; margin-bottom:12px; scrollbar-width:none; }
+  .chips::-webkit-scrollbar { display:none; }
+  .chip {
+    flex:0 0 auto; padding:7px 13px; border-radius:14px;
+    background:var(--card); color:var(--text-muted);
+    border:1px solid var(--border); font-size:12px; font-weight:600;
+    cursor:pointer; transition:.15s;
+  }
+  .chip.active { background:var(--accent); color:var(--accent-text); border-color:var(--accent); }
+
+  .admin-item {
+    background:var(--card); border-radius:14px; padding:14px; margin-bottom:10px;
+    border:1px solid var(--border); box-shadow:0 1px 3px var(--shadow);
+    animation: fadeIn .2s ease;
+    transition: border-color .15s;
+  }
+  .admin-item.is-editor { border-color: var(--warn); box-shadow: 0 0 0 2px rgba(230,81,0,.1), 0 1px 3px var(--shadow); }
+
+  .ai-head { display:flex; gap:12px; align-items:flex-start; }
+  .avatar-sm {
+    width:44px; height:44px; border-radius:12px;
+    background:var(--accent); color:var(--accent-text);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:15px; flex-shrink:0;
+    position:relative;
+  }
+  .avatar-sm.editor-avatar { background: linear-gradient(135deg, var(--warn), #ff8a3d); }
+  .avatar-sm .star {
+    position:absolute; bottom:-4px; right:-4px;
+    width:18px; height:18px; border-radius:50%;
+    background:var(--accent); color:var(--accent-text);
+    display:flex; align-items:center; justify-content:center;
+    font-size:10px; border:2px solid var(--card);
+  }
+  .ai-info { flex:1; min-width:0; }
+  .ai-title { font-weight:700; font-size:15px; }
+  .ai-sub { font-size:12px; color:var(--text-muted); margin-top:3px; word-break:break-word; }
+  .ai-pills { display:flex; gap:5px; flex-wrap:wrap; margin-top:7px; }
+  .ai-id {
+    font-family:monospace; font-size:11px; color:var(--text-muted);
+    background:var(--bg); padding:3px 7px; border-radius:6px;
+    display:inline-block; margin-top:6px;
+  }
+
+  .status-pill { padding:3px 8px; border-radius:10px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.3px; }
+  .status-pill.approved { background:rgba(46,125,50,.18); color:var(--success); }
+  .status-pill.pending  { background:rgba(230,81,0,.18); color:var(--warn); }
+  .status-pill.rejected { background:rgba(198,40,40,.18); color:var(--danger); }
+
+  .role-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:10px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.3px; }
+  .role-badge.student { background:rgba(77,143,255,.15); color:var(--accent); }
+  .role-badge.editor  { background:linear-gradient(135deg, var(--warn), #ff8a3d); color:#fff; }
+
+  .ai-actions {
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(42px, 1fr));
+    gap:6px; margin-top:12px; padding-top:12px;
+    border-top:1px solid var(--border);
+  }
+  .act-btn {
+    height:42px; border-radius:11px;
+    border:1px solid var(--border); background:var(--bg); color:var(--text);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:16px; transition:.15s;
+    position:relative;
+  }
+  .act-btn:active { transform:scale(.92); }
+  .act-btn.success { background:rgba(46,125,50,.18); color:var(--success); border-color:transparent; }
+  .act-btn.danger  { background:rgba(198,40,40,.18); color:var(--danger); border-color:transparent; }
+  .act-btn.primary { background:rgba(77,143,255,.18); color:var(--accent); border-color:transparent; }
+  .act-btn.warn    { background:rgba(230,81,0,.18); color:var(--warn); border-color:transparent; }
+  .act-btn.editor-on  { background:linear-gradient(135deg, var(--warn), #ff8a3d); color:#fff; border-color:transparent; }
+  .act-btn.editor-off { color:var(--text-muted); }
+
+  .day-chips { display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; margin-bottom:12px; scrollbar-width:none; }
+  .day-chips::-webkit-scrollbar { display:none; }
+  .day-chip {
+    flex:0 0 auto; padding:9px 14px; border-radius:12px;
+    background:var(--card); color:var(--text-muted);
+    border:1px solid var(--border); font-size:13px; font-weight:700; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:2px;
+    min-width:58px;
+  }
+  .day-chip.active { background:var(--accent); color:var(--accent-text); border-color:var(--accent); }
+  .day-chip .cnt { font-size:10px; opacity:.75; font-weight:600; }
+
+  .row-btns { display:flex; gap:8px; margin-bottom:14px; }
+  .row-btns .btn { flex:1; }
+
+  .empty-ico-big { font-size:56px; margin-bottom:12px; opacity:.5; }
+
+  .fab {
+    position:fixed; right:20px; bottom:calc(24px + env(safe-area-inset-bottom));
+    width:58px; height:58px; border-radius:50%;
+    background:var(--accent); color:var(--accent-text);
+    border:none; cursor:pointer;
+    font-size:28px; font-weight:300;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 8px 24px var(--shadow), 0 4px 12px rgba(0,0,0,.2);
+    z-index: 150; transition:.15s;
+  }
+  .fab:active { transform:scale(.92); }
+  .fab.hidden { display:none; }
+
+  .modal {
+    position:fixed; inset:0; z-index:200;
+    background:rgba(0,0,0,.55);
+    display:flex; align-items:center; justify-content:center; padding:20px;
+    animation: fadeIn .15s ease; backdrop-filter: blur(3px);
+  }
+  .modal.hidden { display:none; }
+  .modal-box {
+    background:var(--card); border-radius:20px; padding:22px;
+    max-width:440px; width:100%;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+    max-height: 90vh; overflow-y: auto;
+    animation: modalIn .2s ease;
+  }
+  @keyframes modalIn { from { transform:scale(.95); opacity:0; } to { transform:scale(1); opacity:1; } }
+  .modal-box h3 { margin:0 0 16px; font-size:17px; display:flex; align-items:center; gap:8px; }
+  .modal-box .actions { display:flex; gap:8px; margin-top:18px; }
+  .modal-box .actions .btn { flex:1; }
+
+  .field { margin-bottom:12px; }
+  .field label { display:block; font-size:11px; color:var(--text-muted); margin-bottom:6px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+  .field input, .field select, .field textarea {
+    width:100%; padding:12px 14px; border-radius:12px;
+    border:1px solid var(--border); background:var(--bg);
+    color:var(--text); font-size:15px; font-family:inherit;
+    outline:none; transition:border .15s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color:var(--accent); }
+  .field textarea { resize:vertical; min-height:70px; }
+  .field .hint { font-size:11px; color:var(--text-muted); margin-top:4px; }
+
+  .pwd-modal-head { text-align:center; margin-bottom:18px; }
+  .pwd-modal-avatar {
+    width:60px; height:60px; border-radius:50%;
+    background: linear-gradient(135deg, var(--warn), #ff8a3d);
+    color: #fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; font-weight:800;
+    margin: 0 auto 12px;
+  }
+  .pwd-modal-name { font-weight:700; font-size:16px; }
+  .pwd-modal-id { font-family:monospace; font-size:12px; color:var(--text-muted); margin-top:4px; }
+
+  .pwd-display {
+    background: var(--bg);
+    border: 2px dashed var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    margin: 4px 0 14px;
+  }
+  .pwd-display .label {
+    font-size: 11px; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: .5px;
+    margin-bottom: 8px; font-weight: 700;
+  }
+  .pwd-display .value {
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--warn);
+    word-break: break-all;
+    line-height: 1.2;
+  }
+  .pwd-display .actions {
+    display: flex; gap: 8px; margin-top: 12px;
+  }
+  .pwd-display .actions button {
+    flex: 1;
+    padding: 9px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    transition: .15s;
+  }
+  .pwd-display .actions button:active { transform: scale(.96); }
+
+  .toast {
+    position:fixed; bottom:96px; left:50%; transform:translateX(-50%);
+    background:var(--text); color:var(--bg); padding:12px 20px; border-radius:12px;
+    font-size:14px; z-index:400; box-shadow:0 8px 24px rgba(0,0,0,.3);
+    animation: toastIn .25s ease;
+    max-width: 90vw; text-align:center;
+  }
+  @keyframes toastIn { from{opacity:0;transform:translate(-50%,10px)} to{opacity:1;transform:translate(-50%,0)} }
+  .toast.hidden { display:none; }
+
+  .section-hint { font-size:12px; color:var(--text-muted); text-align:center; padding:8px; margin-bottom:8px; }
+
+  @keyframes pulse { 0%, 100% { transform:scale(1); } 50% { transform:scale(1.08); } }
+  @keyframes dot { 0%, 80%, 100% { opacity:.3; transform:translateY(0); } 40% { opacity:1; transform:translateY(-6px); } }
+</style>
+</head>
+<body data-theme="black-blue">
+
+<header>
+  <h1>📚 Расписание МГРК</h1>
+  <div class="sub" id="headerSub">Загрузка…</div>
+</header>
+
+<main>
+  <section id="tab-schedule" class="tab active">
+    <div class="days" id="daysRow"></div>
+    <div class="day-title">
+      <h2 id="dayName">—</h2>
+      <span class="badge" id="dayBadge">0 пар</span>
+    </div>
+    <div id="scheduleList"></div>
+  </section>
+
+  <section id="tab-bells" class="tab">
+    <div class="day-title"><h2>Расписание звонков</h2></div>
+    <div class="bell"><div class="num">1</div><div><div class="time">08:30 — 09:30</div><div class="brk">Пара 1</div></div></div>
+    <div class="bell"><div class="num">2</div><div><div class="time">09:40 — 10:40</div><div class="brk">Пара 2</div></div></div>
+    <div class="bell lunch"><div class="num">🍽</div><div><div class="time">10:40 — 11:20</div><div class="brk">Обед</div></div></div>
+    <div class="bell"><div class="num">3</div><div><div class="time">11:20 — 12:20</div><div class="brk">Пара 3</div></div></div>
+    <div class="bell"><div class="num">4</div><div><div class="time">12:30 — 13:30</div><div class="brk">Пара 4</div></div></div>
+    <div class="bell"><div class="num">5</div><div><div class="time">13:40 — 14:40</div><div class="brk">Пара 5</div></div></div>
+    <div class="bell"><div class="num">6</div><div><div class="time">14:50 — 15:50</div><div class="brk">Пара 6</div></div></div>
+    <div class="bell"><div class="num">7</div><div><div class="time">16:00 — 17:00</div><div class="brk">Пара 7</div></div></div>
+  </section>
+
+  <section id="tab-profile" class="tab">
+    <div class="day-title"><h2>Профиль</h2></div>
+    <div id="profileContent"></div>
+  </section>
+
+  <section id="tab-settings" class="tab">
+    <div class="day-title"><h2>Настройки</h2></div>
+    <div class="settings-group">
+      <h3>Тема оформления</h3>
+      <div id="themesList"></div>
+    </div>
+
+    <div class="settings-group">
+      <h3>Сервисы</h3>
+      <div class="theme-item" id="outputexEntry" style="border-top:none;">
+        <div class="name">🚀 OUTPUTEX AI 2 <span style="color:var(--text-muted);font-size:11px;font-weight:500;">— открыть сайт</span></div>
+        <div class="check" style="visibility:visible;color:var(--accent)">↗</div>
+      </div>
+      <div class="theme-item" id="navigatorEntry">
+        <div class="name">🤖 Навигатор Первых МГРК <span style="color:var(--text-muted);font-size:11px;font-weight:500;">— чат-бот</span></div>
+        <div class="check" style="visibility:visible;color:var(--accent)">↗</div>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <h3>Администрирование</h3>
+      <div id="adminEntryBlock"></div>
+    </div>
+    <div class="settings-group">
+      <h3>Прочее</h3>
+      <div class="theme-item" id="changePwdEntry">
+        <div class="name">🔑 Сменить пароль</div>
+        <div class="check" style="visibility:visible;color:var(--text-muted)">›</div>
+      </div>
+      <div class="theme-item" id="logoutEntry">
+        <div class="name">🚪 Выйти из профиля</div>
+      </div>
+      <div class="theme-item" style="cursor:default;">
+        <div class="name">Версия</div>
+        <div style="color:var(--text-muted);font-size:13px;">2.3.0</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav>
+  <button class="active" data-tab="schedule"><span class="icon">📅</span><span>Расписание</span></button>
+  <button data-tab="bells"><span class="icon">🔔</span><span>Звонки</span></button>
+  <button data-tab="profile"><span class="icon">👤</span><span>Профиль</span></button>
+  <button data-tab="settings"><span class="icon">⚙️</span><span>Настройки</span></button>
+</nav>
+
+<div id="authOverlay" class="overlay hidden">
+  <div class="auth-box">
+    <div class="auth-logo">📚</div>
+    <div class="auth-title">Расписание МГРК</div>
+    <div class="auth-subtitle">Войдите или создайте аккаунт студента</div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" data-auth="login">Вход</div>
+      <div class="auth-tab" data-auth="register">Регистрация</div>
+    </div>
+
+    <div class="auth-form active" id="authFormLogin">
+      <div class="field">
+        <label>ID Студента</label>
+        <input id="loginId" type="text" placeholder="MGRK-2025-0001" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Пароль</label>
+        <div class="password-field">
+          <input id="loginPwd" type="password" placeholder="Вспомните пароль к вашему ID-Студента" autocomplete="off">
+          <button type="button" class="password-toggle" data-target="loginPwd">👁</button>
+        </div>
+      </div>
+      <button class="btn block" id="loginBtn">Войти</button>
+      <div class="auth-divider">или</div>
+      <div class="auth-link" id="gotoRegister">Создать новый аккаунт →</div>
+      <div class="auth-link" id="gotoAdminByPwd" style="color:var(--text-muted);font-size:12px;">🔐 Вход для ответственного (по паролю)</div>
+    </div>
+
+    <div class="auth-form" id="authFormRegister">
+      <div class="field">
+        <label>ФИО полностью</label>
+        <input id="regFio" type="text" placeholder="Иванов Иван Иванович" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Ваша группа</label>
+        <select id="regGroup"></select>
+      </div>
+      <div class="field">
+        <label>Придумайте пароль к вашему ID-Студента</label>
+        <div class="password-field">
+          <input id="regPwd" type="password" placeholder="Минимум 4 символа" autocomplete="off">
+          <button type="button" class="password-toggle" data-target="regPwd">👁</button>
+        </div>
+        <div class="hint">Этот пароль будет требоваться при каждом входе</div>
+      </div>
+      <div class="field">
+        <label>Повторите пароль</label>
+        <div class="password-field">
+          <input id="regPwd2" type="password" placeholder="Ещё раз" autocomplete="off">
+          <button type="button" class="password-toggle" data-target="regPwd2">👁</button>
+        </div>
+      </div>
+      <div class="password-warning">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          НИКОМУ НЕ СООБЩАЙТЕ ВАШ ПАРОЛЬ,<br>ДАЖЕ РАЗРАБОТЧИКАМ
+          <small>Ответственный за расписание никогда не попросит у вас пароль. Если кто-то просит — это мошенник.</small>
+        </div>
+      </div>
+      <button class="btn block" id="registerBtn">Зарегистрироваться</button>
+      <div class="auth-divider">или</div>
+      <div class="auth-link" id="gotoLogin">← У меня уже есть ID</div>
+    </div>
+  </div>
+</div>
+
+<div id="passwordModal" class="modal hidden">
+  <div class="modal-box">
+    <h3>🔐 Вход для ответственного</h3>
+    <div class="field">
+      <input id="pwdInput" type="password" placeholder="Пароль" autocomplete="off">
+    </div>
+    <div class="actions">
+      <button class="btn ghost" id="pwdCancel">Отмена</button>
+      <button class="btn" id="pwdOk">Войти</button>
+    </div>
+  </div>
+</div>
+
+<div id="resultModal" class="modal hidden">
+  <div class="modal-box">
+    <h3>✅ Аккаунт создан</h3>
+    <p style="color:var(--text-muted);font-size:13px;margin:0 0 12px;line-height:1.5;">
+      Запомните или сохраните ваш ID — он нужен для входа вместе с паролем.
+    </p>
+    <div class="id-reveal">
+      <div class="lbl">Ваш ID студента</div>
+      <div class="val" id="resultId">—</div>
+      <div class="hint">Сделайте скриншот или запишите</div>
+    </div>
+    <div class="password-warning">
+      <div class="icon">⚠️</div>
+      <div class="text">НИКОМУ НЕ СООБЩАЙТЕ ВАШ ПАРОЛЬ,<br>ДАЖЕ РАЗРАБОТЧИКАМ</div>
+    </div>
+    <div class="actions">
+      <button class="btn" id="resultOk" style="flex:1;">Понятно, продолжить</button>
+    </div>
+  </div>
+</div>
+
+<div id="pwdResetModal" class="modal hidden">
+  <div class="modal-box" id="pwdResetBox"></div>
+</div>
+
+<div id="adminOverlay" class="overlay hidden">
+  <div class="admin-container">
+    <div class="admin-header">
+      <div class="admin-header-row">
+        <div class="admin-avatar" id="adminAvatar">🔧</div>
+        <div class="admin-header-text">
+          <div class="t1" id="adminTitle">Админ-панель</div>
+          <div class="t2" id="adminSubtitle">Управление расписанием</div>
+        </div>
+        <button class="admin-close" id="adminClose">✕</button>
+      </div>
+    </div>
+
+    <div class="admin-body">
+      <div class="admin-stats" id="adminStats"></div>
+      <div id="maintenancePanel"></div>
+
+      <div class="admin-tabs" id="adminTabs">
+        <div class="admin-tab active" data-atab="students"><span>👥 Студенты</span><span class="cnt" id="cntStudents">0</span></div>
+        <div class="admin-tab" data-atab="schedule"><span>📅 Расписание</span></div>
+        <div class="admin-tab" data-atab="teachers"><span>👨‍🏫 Учителя</span><span class="cnt" id="cntTeachers">0</span></div>
+        <div class="admin-tab" data-atab="groups"><span>🏫 Группы</span><span class="cnt" id="cntGroups">0</span></div>
+      </div>
+
+      <div id="atab-students"></div>
+      <div id="atab-schedule" class="hidden"></div>
+      <div id="atab-teachers" class="hidden"></div>
+      <div id="atab-groups" class="hidden"></div>
+    </div>
+  </div>
+</div>
+
+<button class="fab hidden" id="adminFab">+</button>
+
+<div id="editModal" class="modal hidden">
+  <div class="modal-box" id="editModalBox"></div>
+</div>
+
+<div id="confirmModal" class="modal hidden">
+  <div class="modal-box">
+    <h3 id="confirmTitle">Подтверждение</h3>
+    <p id="confirmText" style="color:var(--text-muted);font-size:14px;line-height:1.5;margin:0 0 4px;"></p>
+    <div class="actions">
+      <button class="btn ghost" id="confirmCancel">Отмена</button>
+      <button class="btn danger" id="confirmOk">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<div id="maintenanceOverlay" class="overlay hidden">
+  <div style="max-width:480px;margin:40px auto;text-align:center;">
+    <div style="font-size:88px;line-height:1;animation:pulse 2s ease-in-out infinite;">🔧</div>
+    <h2 style="font-size:26px;margin:24px 0 12px;">Расписание меняют</h2>
+    <p class="sub" style="font-size:16px;line-height:1.6;margin:0 0 20px;">
+      Подождите немного — ответственный обновляет расписание.<br>
+      <b>Спасибо за терпение!</b>
+    </p>
+    <div style="display:inline-flex;gap:6px;margin-top:12px;">
+      <div style="width:10px;height:10px;border-radius:50%;background:var(--accent);animation:dot 1.4s infinite;"></div>
+      <div style="width:10px;height:10px;border-radius:50%;background:var(--accent);animation:dot 1.4s infinite .2s;"></div>
+      <div style="width:10px;height:10px;border-radius:50%;background:var(--accent);animation:dot 1.4s infinite .4s;"></div>
+    </div>
+    <p style="color:var(--text-muted);font-size:12px;margin-top:32px;">Страница обновится автоматически</p>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script>
+/* ============ API ============ */
+const API = {
+  token() { return localStorage.getItem('mgrk_token') || ''; },
+  setToken(t) { t ? localStorage.setItem('mgrk_token', t) : localStorage.removeItem('mgrk_token'); },
+  async req(method, url, body) {
+    const headers = { 'Content-Type': 'application/json' };
+    const t = this.token();
+    if (t) headers['Authorization'] = 'Bearer ' + t;
+    const res = await fetch(url, {
+      method, headers,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    let data = {};
+    try { data = await res.json(); } catch {}
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+    return data;
+  },
+  get(u) { return this.req('GET', u); },
+  post(u, b) { return this.req('POST', u, b); },
+  put(u, b) { return this.req('PUT', u, b); },
+  del(u) { return this.req('DELETE', u); },
+};
+
+/* ============ CACHE ============ */
+const Cache = {
+  students: [], groups: [], teachers: [], schedules: {},
+  currentStudent: null, role: null,
+  maintenance: false, maintenanceBy: '', maintenanceAt: 0,
+};
+
+async function sync() {
+  const d = await API.get('/api/sync');
+  Cache.students = d.students;
+  Cache.groups = d.groups;
+  Cache.teachers = d.teachers;
+  Cache.schedules = d.schedules;
+  Cache.currentStudent = d.currentStudent;
+  Cache.role = d.role;
+  Cache.maintenance = d.maintenance;
+  Cache.maintenanceBy = d.maintenanceBy;
+  Cache.maintenanceAt = d.maintenanceAt;
+}
+
+/* ============ STORE ============ */
+const Store = {
+  groups()    { return Cache.groups; },
+  teachers()  { return Cache.teachers; },
+  schedules() { return Cache.schedules; },
+  students()  { return Cache.students; },
+  currentStudent() { return Cache.currentStudent; },
+  maintenance() { return Cache.maintenance; },
+  maintenanceBy() { return Cache.maintenanceBy; },
+  maintenanceAt() { return Cache.maintenanceAt; },
+  isCurrentEditor() { return Cache.role === 'editor' || Cache.role === 'admin'; },
+  isAdmin() { return Cache.role === 'admin'; },
+  logout() { API.setToken(null); Cache.currentStudent = null; Cache.role = null; },
+};
+
+/* ============ ТЕМЫ ============ */
+const THEMES = [
+  { id:'black-white',  name:'Чёрный + Белый',      colors:['#0d0d0d','#fff'] },
+  { id:'black-grey',   name:'Чёрный + Серый',      colors:['#0d0d0d','#9e9e9e'] },
+  { id:'black-red',    name:'Чёрный + Красный',    colors:['#0d0d0d','#e53935'] },
+  { id:'black-orange', name:'Чёрный + Оранжевый',  colors:['#0d0d0d','#ff9800'] },
+  { id:'black-yellow', name:'Чёрный + Жёлтый',     colors:['#0d0d0d','#fdd835'] },
+  { id:'black-green',  name:'Чёрный + Зелёный',    colors:['#0d0d0d','#43a047'] },
+  { id:'black-lime',   name:'Чёрный + Лайм',       colors:['#0d0d0d','#c6ff00'] },
+  { id:'black-cyan',   name:'Чёрный + Голубой',    colors:['#0d0d0d','#4fc3f7'] },
+  { id:'black-blue',   name:'Чёрный + Синий',      colors:['#0d0d0d','#4d8fff'] },
+  { id:'black-purple', name:'Чёрный + Фиолетовый', colors:['#0d0d0d','#9c27b0'] },
+  { id:'black-pink',   name:'Чёрный + Розовый',    colors:['#0d0d0d','#ec407a'] },
+  { id:'black-neon',   name:'Чёрный + Неон',       colors:['#050505','#39ff14'] },
+  { id:'black-future', name:'Чёрный + Future',     colors:['#000814','#00e5ff'] },
+  { id:'black-2099',   name:'Чёрный + 2099',       colors:['#0a0014','#ff00ff'] },
+  { id:'black-bw',     name:'Чёрный + BlackWhite', colors:['#000','#fff'] },
+];
+
+const DAYS = [
+  { short:'ПН', full:'Понедельник', key:'ПН' },
+  { short:'ВТ', full:'Вторник',     key:'ВТ' },
+  { short:'СР', full:'Среда',       key:'СР' },
+  { short:'ЧТ', full:'Четверг',     key:'ЧТ' },
+  { short:'ПТ', full:'Пятница',     key:'ПТ' },
+  { short:'СБ', full:'Суббота',     key:'СБ' },
+  { short:'ВС', full:'Воскресенье', key:'ВС', sunday:true },
+];
+
+function todayIndex() { const js = new Date().getDay(); return js === 0 ? 6 : js - 1; }
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function genPassword() {
+  const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
+  let o = ''; for (let i = 0; i < 8; i++) o += chars[Math.floor(Math.random()*chars.length)]; return o;
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.remove('hidden');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.add('hidden'), 2400);
+}
+
+function applyTheme(id) {
+  document.body.setAttribute('data-theme', id);
+  localStorage.setItem('mgrk_theme_local', id);
+  document.querySelectorAll('.theme-item[data-theme]').forEach(el =>
+    el.classList.toggle('selected', el.dataset.theme === id));
+}
+
+/* ============ UI STATE ============ */
+let UI = {
+  tab: 'schedule', day: todayIndex(),
+  adminTab: 'students', studentFilter: 'all',
+  studentSearch: '', teacherSearch: '',
+  adminGroup: null, adminDay: 'ПН',
+};
+
+/* ============ AUTH ============ */
+function renderAuth() {
+  const overlay = document.getElementById('authOverlay');
+  const s = Store.currentStudent();
+  const isAdmin = Store.isAdmin();
+  if (s || isAdmin) { overlay.classList.add('hidden'); return; }
+  overlay.classList.remove('hidden');
+  const sel = document.getElementById('regGroup');
+  const cur = sel.value;
+  sel.innerHTML = Store.groups().map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join('');
+  if (cur && Store.groups().includes(cur)) sel.value = cur;
+}
+
+function switchAuth(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.auth === tab));
+  document.getElementById('authFormLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('authFormRegister').classList.toggle('active', tab === 'register');
+  ['loginId','loginPwd','regFio','regPwd','regPwd2'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+}
+
+document.querySelectorAll('.auth-tab').forEach(t => t.onclick = () => switchAuth(t.dataset.auth));
+document.getElementById('gotoRegister').onclick = () => switchAuth('register');
+document.getElementById('gotoLogin').onclick = () => switchAuth('login');
+document.getElementById('gotoAdminByPwd').onclick = () => {
+  document.getElementById('pwdInput').value = '';
+  document.getElementById('passwordModal').classList.remove('hidden');
+};
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.password-toggle');
+  if (!btn) return;
+  const inp = document.getElementById(btn.dataset.target);
+  if (!inp) return;
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.textContent = show ? '🙈' : '👁';
+});
+
+document.getElementById('loginBtn').onclick = async () => {
+  const id = document.getElementById('loginId').value.trim();
+  const pwd = document.getElementById('loginPwd').value;
+  if (!id) return toast('Введите ваш ID');
+  if (!pwd) return toast('Введите пароль');
+  try {
+    const r = await API.post('/api/login', { id, password: pwd });
+    API.setToken(r.token);
+    await sync();
+    toast('Вход выполнен');
+    await renderAll();
+  } catch (e) { toast(e.message); }
+};
+
+document.getElementById('registerBtn').onclick = async () => {
+  const fio = document.getElementById('regFio').value.trim();
+  const group = document.getElementById('regGroup').value;
+  const pwd = document.getElementById('regPwd').value;
+  const pwd2 = document.getElementById('regPwd2').value;
+  if (fio.split(' ').length < 2) return toast('Введите ФИО полностью');
+  if (pwd.length < 4) return toast('Пароль минимум 4 символа');
+  if (pwd !== pwd2) return toast('Пароли не совпадают');
+  try {
+    const r = await API.post('/api/register', { fio, group, password: pwd });
+    API.setToken(r.token);
+    document.getElementById('resultId').textContent = r.id;
+    document.getElementById('resultModal').classList.remove('hidden');
+    await sync();
+  } catch (e) { toast(e.message); }
+};
+
+document.getElementById('resultOk').onclick = async () => {
+  document.getElementById('resultModal').classList.add('hidden');
+  await renderAll();
+  toast('Ожидайте подтверждения');
+};
+
+/* ============ ГЛАВНЫЙ ЭКРАН ============ */
+function renderHeader() {
+  const s = Store.currentStudent();
+  const sub = document.getElementById('headerSub');
+  if (Store.isAdmin()) { sub.textContent = 'Панель администратора'; return; }
+  if (!s) { sub.textContent = 'Не выполнен вход'; return; }
+  const ri = s.role === 'editor' ? ' ⭐' : '';
+  if (s.status === 'approved') sub.textContent = `${s.group_name} · ${s.fio}${ri}`;
+  else if (s.status === 'pending') sub.textContent = 'Ожидает подтверждения';
+  else sub.textContent = 'Заявка отклонена';
+}
+
+function renderDays() {
+  const row = document.getElementById('daysRow');
+  row.innerHTML = '';
+  const ti = todayIndex();
+  DAYS.forEach((d, i) => {
+    const b = document.createElement('button');
+    b.className = 'day-btn';
+    if (i === UI.day) b.classList.add('active');
+    if (i === ti) b.classList.add('today');
+    b.textContent = d.short;
+    b.onclick = () => { UI.day = i; renderDays(); renderSchedule(); };
+    row.appendChild(b);
+  });
+}
+
+function renderSchedule() {
+  const day = DAYS[UI.day];
+  const list = document.getElementById('scheduleList');
+  const title = document.getElementById('dayName');
+  const badge = document.getElementById('dayBadge');
+  const student = Store.currentStudent();
+  title.textContent = day.full;
+
+  if (Store.maintenance() && !Store.isCurrentEditor()) {
+    badge.textContent = 'обновление';
+    list.innerHTML = `<div class="empty"><div class="empty-ico-big">🔧</div>Расписание меняют<br><small>Спасибо за терпение!</small></div>`;
+    return;
+  }
+  if (!student && !Store.isAdmin()) {
+    badge.textContent = '—';
+    list.innerHTML = `<div class="empty">Не выполнен вход.<br><br><button class="btn" onclick="document.getElementById('authOverlay').classList.remove('hidden')">Войти</button></div>`;
+    return;
+  }
+  if (Store.isAdmin()) {
+    badge.textContent = '—';
+    list.innerHTML = `<div class="empty">Вы вошли как администратор.<br>Расписание смотрите в админ-панели.</div>`;
+    return;
+  }
+  if (student.status === 'pending') {
+    badge.textContent = 'ожидание';
+    list.innerHTML = `<div class="empty"><div class="empty-ico-big">⏳</div>Заявка на рассмотрении.<br>Ответственный подтвердит ваш ID.<br><br><b>Ваш ID:</b> <code>${esc(student.id)}</code></div>`;
+    return;
+  }
+  if (student.status === 'rejected') {
+    badge.textContent = 'отклонено';
+    list.innerHTML = `<div class="empty"><div class="empty-ico-big">❌</div>Заявка отклонена.<br>Обратитесь к ответственному.</div>`;
+    return;
+  }
+  if (day.sunday) {
+    badge.textContent = 'выходной';
+    list.innerHTML = `
+      <div class="sunday-hero">
+        <div class="emoji">🎉</div>
+        <h2>Выходной день</h2>
+        <p>Отдыхай, набирайся сил — завтра снова в бой!</p>
+        <div class="counter">
+          <div><div class="num" id="sc-h">--</div><div class="lbl">час</div></div>
+          <div><div class="num" id="sc-m">--</div><div class="lbl">мин</div></div>
+          <div><div class="num" id="sc-s">--</div><div class="lbl">сек</div></div>
+        </div>
+        <p style="margin-top:16px;font-size:12px;">до конца выходного</p>
+      </div>`;
+    tickSunday();
+    return;
+  }
+
+  const lessons = (Store.schedules()[student.group_name]?.[day.key]) || [];
+  badge.textContent = lessons.length + ' пар';
+  if (!lessons.length) { list.innerHTML = '<div class="empty">Пар нет 🎉</div>'; return; }
+
+  list.innerHTML = lessons.map(l => `
+    <div class="lesson">
+      <div class="num">${l.n}</div>
+      <div class="info">
+        <div class="subject">${esc(l.subject)}</div>
+        <div class="meta">
+          ${l.teacher ? `<span>👤 ${esc(l.teacher)}</span>` : ''}
+          ${l.room ? `<span>🚪 ауд. ${esc(l.room)}</span>` : ''}
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+let sundayTimer = null;
+function tickSunday() {
+  if (sundayTimer) clearInterval(sundayTimer);
+  const update = () => {
+    const eh = document.getElementById('sc-h');
+    if (!eh) { clearInterval(sundayTimer); return; }
+    const now = new Date(); const end = new Date(now); end.setHours(23,59,59,999);
+    const diff = Math.max(0, end - now);
+    const pad = x => String(x).padStart(2,'0');
+    eh.textContent = pad(Math.floor(diff/3600000));
+    document.getElementById('sc-m').textContent = pad(Math.floor((diff%3600000)/60000));
+    document.getElementById('sc-s').textContent = pad(Math.floor((diff%60000)/1000));
+  };
+  update(); sundayTimer = setInterval(update, 1000);
+}
+
+function renderProfile() {
+  const wrap = document.getElementById('profileContent');
+  if (Store.isAdmin()) {
+    wrap.innerHTML = `<div class="profile-card"><div class="profile-avatar">🔧</div><div class="profile-name">Администратор</div><div class="profile-group">Вход по паролю</div></div>`;
+    return;
+  }
+  const s = Store.currentStudent();
+  if (!s) { wrap.innerHTML = `<div class="empty">Профиль не создан.</div>`; return; }
+  const sm = { approved:['✓ Подтверждён','approved'], pending:['⏳ Ожидает','pending'], rejected:['✕ Отклонён','rejected'] };
+  const [lbl, cls] = sm[s.status];
+  const initials = s.fio.split(' ').slice(0,2).map(w => w[0] || '').join('').toUpperCase();
+  const date = new Date(s.created_at).toLocaleDateString('ru-RU');
+  const isEditor = s.role === 'editor';
+
+  wrap.innerHTML = `
+    <div class="profile-card">
+      <div class="profile-avatar">${esc(initials)}${isEditor ? '<div class="editor-star">⭐</div>' : ''}</div>
+      <div class="profile-name">${esc(s.fio)}</div>
+      <div class="profile-group">${s.group_name ? esc(s.group_name) : esc(s.claimed_group) + ' (заявлено)'}</div>
+      <div><span class="status-badge ${cls}">${lbl}</span>${isEditor ? '<span class="status-badge editor">⭐ Студент-Редактор</span>' : ''}</div>
+      <div style="margin-top:20px;text-align:left;">
+        <div class="profile-row"><span class="lbl">ID студента</span><span class="val" style="font-family:monospace;">${esc(s.id)}</span></div>
+        <div class="profile-row"><span class="lbl">Группа</span><span class="val">${s.group_name ? esc(s.group_name) : '—'}</span></div>
+        <div class="profile-row"><span class="lbl">Роль</span><span class="val">${isEditor ? '⭐ Редактор' : '🎓 Студент'}</span></div>
+        <div class="profile-row"><span class="lbl">Дата регистрации</span><span class="val">${date}</span></div>
+      </div>
+    </div>`;
+}
+
+function renderSettings() {
+  const wrap = document.getElementById('themesList');
+  wrap.innerHTML = '';
+  const cur = localStorage.getItem('mgrk_theme_local') || 'black-blue';
+  THEMES.forEach(t => {
+    const el = document.createElement('div');
+    el.className = 'theme-item';
+    el.dataset.theme = t.id;
+    if (cur === t.id) el.classList.add('selected');
+    el.innerHTML = `
+      <div class="swatches">
+        <div class="swatch" style="background:${t.colors[0]}"></div>
+        <div class="swatch" style="background:${t.colors[1]}"></div>
+      </div>
+      <div class="name">${t.name}</div>
+      <div class="check">✓</div>`;
+    el.onclick = () => applyTheme(t.id);
+    wrap.appendChild(el);
+  });
+
+  const block = document.getElementById('adminEntryBlock');
+  const s = Store.currentStudent();
+  const isEditor = s && s.role === 'editor';
+
+  if (Store.isAdmin()) {
+    block.innerHTML = `<div class="theme-item" id="editorEntry" style="border-top:none;">
+      <div class="name">⭐ Панель администратора</div>
+      <div class="check" style="visibility:visible;color:var(--warn)">›</div>
+    </div>`;
+    document.getElementById('editorEntry').onclick = () => openAdmin();
+  } else if (!s) {
+    block.innerHTML = `<div class="theme-item" style="cursor:default;"><div class="name" style="color:var(--text-muted);">Войдите в профиль</div></div>`;
+  } else if (isEditor) {
+    block.innerHTML = `<div class="theme-item" id="editorEntry" style="border-top:none;">
+      <div class="name">⭐ Панель редактора <span style="color:var(--warn);font-weight:700;">(без пароля)</span></div>
+      <div class="check" style="visibility:visible;color:var(--warn)">›</div>
+    </div>`;
+    document.getElementById('editorEntry').onclick = () => openAdmin();
+  } else {
+    block.innerHTML = `<div class="theme-item" id="adminEntry" style="border-top:none;">
+      <div class="name">🔐 Вход для ответственного</div>
+      <div class="check" style="visibility:visible;color:var(--text-muted)">›</div>
+    </div>`;
+    document.getElementById('adminEntry').onclick = () => {
+      document.getElementById('pwdInput').value = '';
+      document.getElementById('passwordModal').classList.remove('hidden');
+    };
+  }
+}
+
+/* ============ СЕРВИСЫ ============ */
+document.getElementById('outputexEntry').onclick = () => {
+  window.open('https://outputex-ai.relaxdev.ru/', '_blank', 'noopener,noreferrer');
+};
+
+document.getElementById('navigatorEntry').onclick = () => {
+  window.open('https://vk.ru/mgrk_referal_bot', '_blank', 'noopener,noreferrer');
+};
+
+/* ============ НАВИГАЦИЯ ============ */
+document.querySelectorAll('nav button').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    UI.tab = btn.dataset.tab;
+    if (UI.tab !== 'schedule' && sundayTimer) { clearInterval(sundayTimer); sundayTimer = null; }
+  };
+});
+
+/* ============ АДМИН ВХОД ============ */
+document.getElementById('pwdCancel').onclick = () => document.getElementById('passwordModal').classList.add('hidden');
+document.getElementById('pwdOk').onclick = async () => {
+  const p = document.getElementById('pwdInput').value;
+  try {
+    const r = await API.post('/api/admin-login', { password: p });
+    API.setToken(r.token);
+    document.getElementById('passwordModal').classList.add('hidden');
+    await sync();
+    await renderAll();
+    openAdmin();
+  } catch (e) { toast(e.message); }
+};
+
+/* ============ СМЕНА ПАРОЛЯ ============ */
+document.getElementById('changePwdEntry').onclick = () => {
+  const s = Store.currentStudent();
+  if (!s) { toast('Войдите'); return; }
+  openEditModal({
+    title: '🔑 Сменить пароль',
+    body: `
+      <div class="field"><label>Текущий пароль</label><input id="cpOld" type="password"></div>
+      <div class="field"><label>Новый пароль</label><input id="cpNew" type="password" placeholder="Минимум 4 символа"></div>
+      <div class="field"><label>Повторите новый</label><input id="cpNew2" type="password"></div>
+      <div class="password-warning"><div class="icon">⚠️</div><div class="text">НИКОМУ НЕ СООБЩАЙТЕ ВАШ ПАРОЛЬ,<br>ДАЖЕ РАЗРАБОТЧИКАМ</div></div>`,
+    saveText: 'Сменить пароль',
+    onSave: async () => {
+      const o = document.getElementById('cpOld').value;
+      const n = document.getElementById('cpNew').value;
+      const n2 = document.getElementById('cpNew2').value;
+      if (!o) { toast('Введите текущий'); return false; }
+      if (n.length < 4) { toast('Минимум 4 символа'); return false; }
+      if (n !== n2) { toast('Пароли не совпадают'); return false; }
+      try {
+        await API.post('/api/change-password', { oldPwd: o, newPwd: n });
+        toast('Пароль изменён');
+        return true;
+      } catch (e) { toast(e.message); return false; }
+    }
+  });
+};
+
+document.getElementById('logoutEntry').onclick = () => {
+  confirmDialog('Выйти из профиля?', 'Вы сможете войти снова, зная свой ID и пароль.', async () => {
+    Store.logout();
+    await renderAll();
+    toast('Вы вышли');
+  });
+};
+
+/* ============ АДМИНКА ============ */
+function openAdmin() {
+  document.getElementById('adminOverlay').classList.remove('hidden');
+  const isAdmin = Store.isAdmin();
+  const isEditor = Store.isCurrentEditor();
+  document.getElementById('adminAvatar').textContent = isAdmin ? '🔧' : (isEditor ? '⭐' : '🔧');
+  document.getElementById('adminTitle').textContent = isAdmin ? 'Админ-панель' : 'Панель редактора';
+  document.getElementById('adminSubtitle').textContent = isAdmin ? 'Полный доступ' : 'Студент-Редактор';
+  renderAdminAll();
+  checkMaintenanceOverlay();
+}
+document.getElementById('adminClose').onclick = () => {
+  document.getElementById('adminOverlay').classList.add('hidden');
+  updateFab();
+  checkMaintenanceOverlay();
+};
+
+document.querySelectorAll('#adminTabs .admin-tab').forEach(t => {
+  t.onclick = () => {
+    document.querySelectorAll('#adminTabs .admin-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    UI.adminTab = t.dataset.atab;
+    ['students','schedule','teachers','groups'].forEach(k =>
+      document.getElementById('atab-'+k).classList.toggle('hidden', k !== UI.adminTab));
+    updateFab();
+  };
+});
+
+function updateFab() {
+  const fab = document.getElementById('adminFab');
+  const adminOpen = !document.getElementById('adminOverlay').classList.contains('hidden');
+  if (!adminOpen) { fab.classList.add('hidden'); return; }
+  if (UI.adminTab === 'schedule') {
+    fab.classList.remove('hidden');
+    fab.onclick = () => addLessonDialog();
+  } else {
+    fab.classList.add('hidden');
+  }
+}
+
+function renderAdminAll() {
+  renderAdminStats();
+  renderMaintenancePanel();
+  renderAdminStudents();
+  renderAdminSchedule();
+  renderAdminTeachers();
+  renderAdminGroups();
+  updateFab();
+
+  document.getElementById('cntStudents').textContent = Store.students().length;
+  const pending = Store.students().filter(s => s.status === 'pending').length;
+  const cs = document.getElementById('cntStudents');
+  if (pending > 0) { cs.classList.add('hot'); cs.textContent = pending; }
+  else cs.classList.remove('hot');
+  document.getElementById('cntTeachers').textContent = Store.teachers().length;
+  document.getElementById('cntGroups').textContent = Store.groups().length;
+}
+
+function renderAdminStats() {
+  const wrap = document.getElementById('adminStats');
+  const s = Store.students();
+  const pending = s.filter(x => x.status === 'pending').length;
+  const editors = s.filter(x => x.role === 'editor').length;
+  const cards = [
+    { icon:'👥', label:'Студенты', val: s.length, tab:'students', cls:'' },
+    { icon:'⏳', label:'Заявки',   val: pending,  tab:'students', cls: pending > 0 ? 'hot' : '', filter:'pending', pulse: pending > 0 },
+    { icon:'⭐', label:'Редакторы', val: editors, tab:'students', cls: editors > 0 ? 'editors' : '', filter:'editors' },
+    { icon:'👨‍🏫', label:'Учителя', val: Store.teachers().length, tab:'teachers', cls:'' },
+  ];
+  wrap.innerHTML = cards.map(c => `
+    <div class="stat-card ${c.cls}" data-goto="${c.tab}" data-filter="${c.filter||''}">
+      <div class="stat-top"><div class="stat-icon">${c.icon}</div>${c.pulse ? '<div class="pulse-dot"></div>' : ''}</div>
+      <div class="stat-value">${c.val}</div>
+      <div class="stat-label">${c.label}</div>
+    </div>`).join('');
+  wrap.querySelectorAll('.stat-card').forEach(el => {
+    el.onclick = () => {
+      const tab = el.dataset.goto;
+      if (el.dataset.filter) UI.studentFilter = el.dataset.filter;
+      document.querySelectorAll('#adminTabs .admin-tab').forEach(x =>
+        x.classList.toggle('active', x.dataset.atab === tab));
+      UI.adminTab = tab;
+      ['students','schedule','teachers','groups'].forEach(k =>
+        document.getElementById('atab-'+k).classList.toggle('hidden', k !== tab));
+      renderAdminAll();
+    };
+  });
+}
+
+function renderMaintenancePanel() {
+  const wrap = document.getElementById('maintenancePanel');
+  const on = Store.maintenance();
+  const by = Store.maintenanceBy();
+  const time = on ? new Date(Store.maintenanceAt()).toLocaleTimeString('ru-RU', {hour:'2-digit',minute:'2-digit'}) : '';
+  wrap.innerHTML = `
+    <div class="maint-bar ${on ? 'on' : ''}">
+      <div class="mi">${on ? '🔧' : '✅'}</div>
+      <div class="mt">
+        <div class="t1">${on ? 'Режим редактирования' : 'Режим редактирования выкл'}</div>
+        <div class="t2">${on ? `С ${time}${by ? ' · <span class="by">'+esc(by)+'</span>' : ''}` : 'Студенты видят расписание'}</div>
+      </div>
+      <button class="maint-toggle" id="maintenanceToggle">${on ? 'Закончить' : 'Начать'}</button>
+    </div>`;
+  document.getElementById('maintenanceToggle').onclick = async () => {
+    const s = Store.currentStudent();
+    try {
+      if (on) {
+        await API.post('/api/maintenance', { on: false, by: '' });
+        toast('Режим выключен');
+      } else {
+        const who = (s && s.fio) || prompt('Ваше имя:', '') || '';
+        await API.post('/api/maintenance', { on: true, by: who });
+        toast('Режим включён');
+      }
+      await sync();
+      renderMaintenancePanel(); renderSchedule(); checkMaintenanceOverlay();
+    } catch (e) { toast(e.message); }
+  };
+}
+
+/* ---- СТУДЕНТЫ ---- */
+function renderAdminStudents() {
+  const wrap = document.getElementById('atab-students');
+  let list = Store.students();
+  if (UI.studentFilter === 'editors') list = list.filter(s => s.role === 'editor');
+  else if (UI.studentFilter !== 'all') list = list.filter(s => s.status === UI.studentFilter);
+  const q = UI.studentSearch.trim().toLowerCase();
+  if (q) list = list.filter(s =>
+    s.fio.toLowerCase().includes(q) || s.id.toLowerCase().includes(q) ||
+    (s.group_name || s.claimed_group || '').toLowerCase().includes(q));
+
+  const filters = [
+    { id:'all', label:'Все' },
+    { id:'pending', label:'⏳ Заявки' },
+    { id:'approved', label:'✓ ОК' },
+    { id:'rejected', label:'✕ Откл.' },
+    { id:'editors', label:'⭐ Редакторы' },
+  ];
+
+  wrap.innerHTML = `
+    <div class="admin-toolbar"><input type="text" id="studentSearch" placeholder="🔍 Поиск по ФИО, ID, группе" value="${esc(UI.studentSearch)}"></div>
+    <div class="chips">${filters.map(f => `<div class="chip ${UI.studentFilter===f.id?'active':''}" data-f="${f.id}">${f.label}</div>`).join('')}</div>
+    ${list.length === 0
+      ? '<div class="empty"><div class="empty-ico-big">🔍</div>Никого не найдено</div>'
+      : list.map(s => studentCard(s)).join('')}
+  `;
+  document.getElementById('studentSearch').oninput = e => {
+    UI.studentSearch = e.target.value;
+    renderAdminStudents();
+    const inp = document.getElementById('studentSearch');
+    if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+  };
+  wrap.querySelectorAll('.chip').forEach(c => {
+    c.onclick = () => { UI.studentFilter = c.dataset.f; renderAdminStudents(); };
+  });
+}
+
+function studentCard(s) {
+  const initials = s.fio.split(' ').slice(0,2).map(w => w[0] || '').join('').toUpperCase();
+  const group = s.group_name || s.claimed_group;
+  const date = new Date(s.created_at).toLocaleDateString('ru-RU');
+  const isEditor = s.role === 'editor';
+  const statusLabel = s.status === 'pending' ? 'Ожидает' : s.status === 'approved' ? 'ОК' : 'Откл.';
+  return `
+    <div class="admin-item ${isEditor ? 'is-editor' : ''}">
+      <div class="ai-head">
+        <div class="avatar-sm ${isEditor ? 'editor-avatar' : ''}">${esc(initials)}${isEditor ? '<div class="star">⭐</div>' : ''}</div>
+        <div class="ai-info">
+          <div class="ai-title">${esc(s.fio)}</div>
+          <div class="ai-sub">${esc(group)} · ${date}</div>
+          <div class="ai-pills">
+            <span class="status-pill ${s.status}">${statusLabel}</span>
+            <span class="role-badge ${isEditor ? 'editor' : 'student'}">${isEditor ? '⭐ Редактор' : '🎓 Студент'}</span>
+          </div>
+          <div class="ai-id">${esc(s.id)}</div>
+        </div>
+      </div>
+      <div class="ai-actions">
+        ${s.status === 'pending' ? `
+          <button class="act-btn success" onclick="approveStudent('${esc(s.id)}')" title="Подтвердить">✓</button>
+          <button class="act-btn danger" onclick="rejectStudent('${esc(s.id)}')" title="Отклонить">✕</button>
+        ` : `<button class="act-btn warn" onclick="setPending('${esc(s.id)}')" title="Вернуть в ожидание">↺</button>`}
+        <button class="act-btn ${isEditor ? 'editor-on' : 'editor-off'}" onclick="toggleEditor('${esc(s.id)}')" title="Роль">⭐</button>
+        <button class="act-btn primary" onclick="editStudent('${esc(s.id)}')" title="Редактировать">✏️</button>
+        <button class="act-btn" onclick="editStudentGroup('${esc(s.id)}')" title="Сменить группу">🔀</button>
+        <button class="act-btn warn" onclick="resetStudentPassword('${esc(s.id)}')" title="Сбросить пароль">🔑</button>
+        <button class="act-btn danger" onclick="removeStudent('${esc(s.id)}')" title="Удалить">🗑</button>
+      </div>
+    </div>`;
+}
+
+window.approveStudent = async (id) => {
+  try { await API.post(`/api/students/${id}/approve`, {}); await sync(); renderAdminAll(); await renderAll(); toast('Подтверждён'); }
+  catch (e) { toast(e.message); }
+};
+window.rejectStudent = async (id) => {
+  try { await API.post(`/api/students/${id}/reject`); await sync(); renderAdminAll(); await renderAll(); toast('Отклонён'); }
+  catch (e) { toast(e.message); }
+};
+window.setPending = async (id) => {
+  try { await API.post(`/api/students/${id}/pending`); await sync(); renderAdminAll(); toast('В ожидании'); }
+  catch (e) { toast(e.message); }
+};
+window.toggleEditor = async (id) => {
+  const s = Store.students().find(x => x.id === id);
+  const newRole = s.role === 'editor' ? 'student' : 'editor';
+  try {
+    await API.post(`/api/students/${id}/role`, { role: newRole });
+    await sync(); renderAdminAll(); await renderAll();
+    toast(newRole === 'editor' ? '⭐ Редактор' : 'Роль снята');
+  } catch (e) { toast(e.message); }
+};
+
+window.resetStudentPassword = (id) => {
+  const s = Store.students().find(x => x.id === id);
+  if (!s) return;
+  const initials = s.fio.split(' ').slice(0,2).map(w => w[0] || '').join('').toUpperCase();
+  let pwd = genPassword();
+  const box = document.getElementById('pwdResetBox');
+  box.innerHTML = `
+    <h3>🔑 Сброс пароля</h3>
+    <div class="pwd-modal-head">
+      <div class="pwd-modal-avatar">${esc(initials)}</div>
+      <div class="pwd-modal-name">${esc(s.fio)}</div>
+      <div class="pwd-modal-id">${esc(s.id)}</div>
+    </div>
+    <p style="color:var(--text-muted);font-size:13px;margin:0 0 14px;text-align:center;line-height:1.5;">
+      Новый пароль. <b>Сообщите лично</b> — не в чате и не по телефону.
+    </p>
+    <div class="pwd-display">
+      <div class="label">Новый пароль</div>
+      <div class="value" id="newPwdValue">${esc(pwd)}</div>
+      <div class="actions">
+        <button id="copyPwdBtn">📋 Копировать</button>
+        <button id="genPwdBtn">🎲 Новый</button>
+      </div>
+    </div>
+    <div class="password-warning" style="margin-bottom:0;">
+      <div class="icon">⚠️</div>
+      <div class="text">НИКОМУ НЕ СООБЩАЙТЕ ПАРОЛЬ,<br>ДАЖЕ РАЗРАБОТЧИКАМ
+        <small>После закрытия окна пароль больше не будет показан.</small>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn ghost" id="pwdResetCancel">Отмена</button>
+      <button class="btn warn" id="pwdResetSave">Установить</button>
+    </div>`;
+  const modal = document.getElementById('pwdResetModal');
+  modal.classList.remove('hidden');
+
+  document.getElementById('copyPwdBtn').onclick = async () => {
+    try { await navigator.clipboard.writeText(pwd); toast('Скопировано'); }
+    catch {
+      const ta = document.createElement('textarea');
+      ta.value = pwd; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); ta.remove();
+      toast('Скопировано');
+    }
+  };
+  document.getElementById('genPwdBtn').onclick = () => {
+    pwd = genPassword();
+    document.getElementById('newPwdValue').textContent = pwd;
+  };
+  document.getElementById('pwdResetCancel').onclick = () => modal.classList.add('hidden');
+  document.getElementById('pwdResetSave').onclick = async () => {
+    try {
+      await API.post(`/api/students/${id}/reset-password`, { password: pwd });
+      toast('Пароль установлен');
+      modal.classList.add('hidden');
+      renderAdminAll();
+    } catch (e) { toast(e.message); }
+  };
+};
+
+window.editStudent = (id) => {
+  const s = Store.students().find(x => x.id === id);
+  if (!s) return;
+  const groups = Store.groups();
+  const cur = s.group_name || s.claimed_group;
+  openEditModal({
+    title: '✏️ Редактировать',
+    body: `
+      <div class="field"><label>ФИО</label><input id="mFio" type="text" value="${esc(s.fio)}"></div>
+      <div class="field"><label>Группа</label><select id="mGroup">${groups.map(g => `<option value="${esc(g)}" ${g===cur?'selected':''}>${esc(g)}</option>`).join('')}</select></div>
+      <div class="field"><label>Статус</label><select id="mStatus">
+        <option value="pending" ${s.status==='pending'?'selected':''}>Ожидает</option>
+        <option value="approved" ${s.status==='approved'?'selected':''}>Подтверждён</option>
+        <option value="rejected" ${s.status==='rejected'?'selected':''}>Отклонён</option>
+      </select></div>
+      <div class="field"><label>Роль</label><select id="mRole">
+        <option value="student" ${s.role!=='editor'?'selected':''}>🎓 Студент</option>
+        <option value="editor"  ${s.role==='editor'?'selected':''}>⭐ Редактор</option>
+      </select></div>`,
+    onSave: async () => {
+      const fio = document.getElementById('mFio').value.trim();
+      const group = document.getElementById('mGroup').value;
+      const status = document.getElementById('mStatus').value;
+      const role = document.getElementById('mRole').value;
+      if (fio.split(' ').length < 2) { toast('ФИО полностью'); return false; }
+      try {
+        await API.put(`/api/students/${id}`, { fio, group, status, role });
+        await sync(); renderAdminAll(); await renderAll();
+        toast('Сохранено');
+        return true;
+      } catch (e) { toast(e.message); return false; }
+    }
+  });
+};
+window.editStudentGroup = (id) => {
+  const s = Store.students().find(x => x.id === id);
+  if (!s) return;
+  const groups = Store.groups();
+  const cur = s.group_name || s.claimed_group;
+  openEditModal({
+    title: '🔀 Сменить группу',
+    body: `<div class="field"><label>Новая группа</label><select id="mNewGroup">${groups.map(g => `<option value="${esc(g)}" ${g===cur?'selected':''}>${esc(g)}</option>`).join('')}</select></div>`,
+    onSave: async () => {
+      const g = document.getElementById('mNewGroup').value;
+      try {
+        await API.post(`/api/students/${id}/group`, { group: g });
+        await sync(); renderAdminAll(); await renderAll();
+        toast('Группа изменена');
+        return true;
+      } catch (e) { toast(e.message); return false; }
+    }
+  });
+};
+window.removeStudent = (id) => {
+  const s = Store.students().find(x => x.id === id);
+  if (!s) return;
+  confirmDialog('Удалить?', `${s.fio} (${s.id}) будет удалён.`, async () => {
+    try {
+      await API.del(`/api/students/${id}`);
+      await sync(); renderAdminAll(); await renderAll();
+      toast('Удалён');
+    } catch (e) { toast(e.message); }
+  });
+};
+
+/* ---- РАСПИСАНИЕ ---- */
+function renderAdminSchedule() {
+  const wrap = document.getElementById('atab-schedule');
+  const groups = Store.groups();
+  if (!UI.adminGroup) UI.adminGroup = groups[0];
+  const schedules = Store.schedules();
+  const lessons = (schedules[UI.adminGroup]?.[UI.adminDay]) || [];
+  const workingDays = DAYS.filter(d => !d.sunday);
+
+  wrap.innerHTML = `
+    <div class="field"><label>Группа</label>
+      <select id="adminGroupSel">${groups.map(g => `<option value="${esc(g)}" ${g===UI.adminGroup?'selected':''}>${esc(g)}</option>`).join('')}</select>
+    </div>
+    <div class="day-chips">
+      ${workingDays.map(d => {
+        const cnt = (schedules[UI.adminGroup]?.[d.key] || []).length;
+        return `<div class="day-chip ${UI.adminDay===d.key?'active':''}" data-day="${d.key}">
+          <span>${d.short}</span><span class="cnt">${cnt} пар</span>
+        </div>`;
+      }).join('')}
+    </div>
+    ${lessons.length > 0 ? `<div class="row-btns"><button class="btn ghost small" id="clearDayBtn">🗑 Очистить день</button></div>` : ''}
+    ${lessons.length === 0
+      ? '<div class="empty"><div class="empty-ico-big">📭</div>Пар нет<br><small style="font-size:12px;opacity:.7;">Нажмите + внизу справа</small></div>'
+      : lessons.slice().sort((a,b) => a.n - b.n).map(l => lessonCardAdmin(l, lessons.indexOf(l))).join('')}
+  `;
+  document.getElementById('adminGroupSel').onchange = e => { UI.adminGroup = e.target.value; renderAdminSchedule(); };
+  wrap.querySelectorAll('.day-chip').forEach(c => {
+    c.onclick = () => { UI.adminDay = c.dataset.day; renderAdminSchedule(); };
+  });
+  const cb = document.getElementById('clearDayBtn');
+  if (cb) cb.onclick = () => {
+    confirmDialog('Очистить день?', `Все пары ${UI.adminGroup} на ${DAYS.find(d=>d.key===UI.adminDay).full} будут удалены.`, async () => {
+      try {
+        await API.post(`/api/schedule/${encodeURIComponent(UI.adminGroup)}/${encodeURIComponent(UI.adminDay)}/clear`);
+        await sync(); renderAdminSchedule();
+        toast('День очищен');
+      } catch (e) { toast(e.message); }
+    });
+  };
+}
+
+function lessonCardAdmin(l, idx) {
+  return `
+    <div class="admin-item">
+      <div class="ai-head">
+        <div class="avatar-sm">${l.n}</div>
+        <div class="ai-info">
+          <div class="ai-title">${esc(l.subject)}</div>
+          <div class="ai-sub">${l.teacher ? '👤 '+esc(l.teacher) : ''}${l.room ? (l.teacher?' · ':'')+'🚪 ауд. '+esc(l.room) : ''}</div>
+        </div>
+      </div>
+      <div class="ai-actions">
+        <button class="act-btn primary" onclick="editLesson(${idx})" title="Редактировать">✏️</button>
+        <button class="act-btn" onclick="copyLesson(${idx})" title="Скопировать">📋</button>
+        <button class="act-btn danger" onclick="removeLesson(${idx})" title="Удалить">🗑</button>
+      </div>
+    </div>`;
+}
+
+function addLessonDialog() {
+  const teachers = Store.teachers();
+  const cnt = (Store.schedules()[UI.adminGroup]?.[UI.adminDay]?.length || 0) + 1;
+  openEditModal({
+    title: '➕ Новая пара',
+    body: `
+      <div class="field"><label>№ пары</label><input id="lN" type="number" min="1" max="8" value="${cnt}"></div>
+      <div class="field"><label>Предмет</label><input id="lSubj" type="text" placeholder="Информатика"></div>
+      <div class="field"><label>Преподаватель</label>
+        <input id="lTeacher" list="teachersList" placeholder="Начните вводить">
+        <datalist id="teachersList">${teachers.map(t => `<option value="${esc(t.name)}">`).join('')}</datalist>
+      </div>
+      <div class="field"><label>Аудитория</label><input id="lRoom" type="text" placeholder="36"></div>`,
+    onSave: async () => {
+      const n = parseInt(document.getElementById('lN').value) || 1;
+      const subject = document.getElementById('lSubj').value.trim();
+      const teacher = document.getElementById('lTeacher').value.trim();
+      const room = document.getElementById('lRoom').value.trim();
+      if (!subject) { toast('Введите предмет'); return false; }
+      try {
+        await API.post(`/api/schedule/${encodeURIComponent(UI.adminGroup)}/${encodeURIComponent(UI.adminDay)}`,
+          { n, subject, teacher, room });
+        await sync(); renderAdminSchedule();
+        toast('Пара добавлена');
+        return true;
+      } catch (e) { toast(e.message); return false; }
+    }
+  });
+}
+
+window.editLesson = (idx) => {
+  const l = Store.schedules()[UI.adminGroup][UI.adminDay][idx];
+  const teachers = Store.teachers();
+  openEditModal({
+    title: '✏️ Редактировать пару',
+    body: `
+      <div class="field"><label>№ пары</label><input id="lN" type="number" value="${l.n}"></div>
+      <div class="field"><label>Предмет</label><input id="lSubj" type="text" value="${esc(l.subject)}"></div>
+      <div class="field"><label>Преподаватель</label>
+        <input id="lTeacher" list="teachersList" value="${esc(l.teacher||'')}">
+        <datalist id="teachersList">${teachers.map(t => `<option value="${esc(t.name)}">`).join('')}</datalist>
+      </div>
+      <div class="field"><label>Аудитория</label><input id="lRoom" type="text" value="${esc(l.room||'')}"></div>`,
+    onSave: async () => {
+      const n = parseInt(document.getElementById('lN').value) || 1;
+      const subject = document.getElementById('lSubj').value.trim();
+      const teacher = document.getElementById('lTeacher').value.trim();
+      const room = document.getElementById('lRoom').value.trim();
+      if (!subject) { toast('Введите предмет'); return false; }
+      try {
+        await API.put(`/api/schedule/${encodeURIComponent(UI.adminGroup)}/${encodeURIComponent(UI.adminDay)}/${idx}`,
+          { n, subject, teacher, room });
+        await sync(); renderAdminSchedule();
+        toast('Сохранено');
+        return true;
+      } catch (e) { toast(e.message); return false; }
+    }
+  });
+};
+
+window.copyLesson = (idx) => {
+  const l = Store.schedules()[UI.adminGroup][UI.adminDay][idx];
+  openEditModal({
+    title: '📋 Скопировать пару',
+    body: `
+      <p style="color:var(--text-muted);font-size:13px;margin:0 0 16px;">Пара «${esc(l.subject)}» будет добавлена в выбранный день.</p>
+      <div class="field"><label>В какой день</label>
+        <select id="cDay">${DAYS.filter(d=>!d.sunday).map(d => `<option value="${d.key}">${d.full}</option>`).join('')}</select>
+      </div>`,
+    saveText: 'Скопировать',
+    onSave: async () => {
+      const day = document.getElementById('cDay').value;
+      try {
+        await API.post(`/api/schedule/${encodeURIComponent(UI.adminGroup)}/${encodeURIComponent(day)}`, { ...l });
+        await sync();
+        toast('Скопировано');
+        return true;
+      } catch (e) { toast(e.message); return false; }
+    }
+  });
+};
+
+window.removeLesson = (idx) => {
+  const l = Store.schedules()[UI.adminGroup][UI.adminDay][idx];
+  confirmDialog('Удалить пару?', `${l.subject} (${l.n} пара) будет удалена.`, async () => {
+    try {
+      await API.del(`/api/schedule/${encodeURIComponent(UI.adminGroup)}/${encodeURIComponent(UI.adminDay)}/${idx}`);
+      await sync(); renderAdminSchedule();
+      toast('Удалено');
+    } catch (e) { toast(e.message); }
+  });
+};
+
+/* ---- УЧИТЕЛЯ ---- */
+function renderAdminTeachers() {
+  const wrap = document.getElementById('atab-teachers');
+  let list = Store.teachers();
+  const q = UI.teacherSearch.trim().toLowerCase();
+  if (q) list = list.filter(t =>
+    t.name.toLowerCase().includes(q) || (t.dept||'').toLowerCase().includes(q) ||
+    (t.subjects || []).join(',').toLowerCase().includes(q));
+  wrap.innerHTML = `
+    <div class="admin-toolbar">
+      <input type="text" id="teacherSearch" placeholder="🔍 Поиск" value="${esc(UI.teacherSearch)}">
+      <button class="add-btn" id="addTeacherBtn" title="Добавить">+</button>
+    </div>
+    ${list.length === 0
+      ? '<div class="empty"><div class="empty-ico-big">👨‍🏫</div>Никого не найдено<br><small>Нажмите + рядом с поиском</small></div>'
+      : list.map(t => teacherCard(t)).join('')}`;
+  document.getElementById('teacherSearch').oninput = e => {
+    UI.teacherSearch = e.target.value;
+    renderAdminTeachers();
+    const inp = document.getElementById('teacherSearch');
+    if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+  };
+  document.getElementById('addTeacherBtn').onclick = () => addTeacherDialog();
+}
+
+function teacherCard(t) {
+  const initials = t.name.split(' ').slice(0,2).map(w => w[0] || '').join('').toUpperCase();
+  return `
+    <div class="admin-item">
+      <div class="ai-head">
+        <div class="avatar-sm">${esc(initials)}</div>
+        <div class="ai-info">
+          <div class="ai-title">${esc(t.name)}</div>
+          <div class="ai-sub">${esc(t.dept||'')}</div>
+          ${(t.subjects||[]).length ? `<div class="ai-pills">${t.subjects.map(s => `<span class="status-pill" style="background:rgba(77,143,255,.15);color:var(--accent);">${esc(s)}</span>`).join('')}</div>` : ''}
+        </div>
+      </div>
+      <div class="ai-actions">
+        <button class="act-btn primary" onclick="editTeacher('${esc(t.id)}')" title="Редактировать">✏️</button>
+        <button class="act-btn danger" onclick="removeTeacher('${esc(t.id)}')" title="Удалить">🗑</button>
+      </div>
+    </div>`;
+}
+
+function addTeacherDialog() {
+  openEditModal({
+    title: '➕ Новый преподаватель',
+    body: `
+      <div class="field"><label>ФИО (сокращённо)</label><input id="tName" type="text" placeholder="Иванов И.И."></div>
+      <div class="field"><label>Отделение / ПЦК</label><input id="tDept" type="text" placeholder="ПЦК ИТ"></div>
+      <div class="field"><label>Предметы через запятую</label><textarea id="tSubj" placeholder="Информатика, ОПД"></textarea></div>`,
+    onSave: async () => {
+      const name = document.getElementById('tName').value.trim();
+      const dept = document.getElementById('tDept').value.trim();
+      const subjects = document.getElementById('tSubj').value.split(',').map(s=>s.trim()).filter(Boolean);
+      if (!name) { toast('ФИО'); return false; }
+      try {
+        await API.post('/api/teachers', { name, dept, subjects });
+        await sync(); renderAdminAll();
+        toast('Добавлен');
+        return true;
+      } catch (e) { toast(e.message); return false; }
+    }
+  });
+}
+
+window.editTeacher = (id) => {
+  const t = Store.teachers().find(x => x.id === id);
+  if (!t) return;
+  openEditModal({
+    title: '✏️ Редактировать',
+    body: `
+      <div class="field"><label>ФИО</label><input id="tName" type="text" value="${esc(t.name)}"></div>
+      <div class="field"><label>Отделение / Корпус</label><input id="tDept" type="text" value="${esc(t.dept||'')}"></div>
+      <div class="field"><label>Предметы</label><textarea id="tSubj">${esc((t.subjects||[]).join(', '))}</textarea></div>`,
+    onSave: async () => {
+      const name = document.getElementById('tName').value.trim();
+      const dept = document.getElementById('tDept').value.trim();
+      const subjects = document.getElementById('tSubj').value.split(',').map(s=>s.trim()).filter(Boolean);
+      if (!name) { toast('ФИО'); return false; }
+      try {
+        await API.put(`/api/teachers/${id}`, { name, dept, subjects });
+        await sync(); renderAdminAll();
+        toast('Сохранено');
+        return true;
+      } catch (e) { toast(e.message); return false; }
+    }
+  });
+};
+
+window.removeTeacher = (id) => {
+  const t = Store.teachers().find(x => x.id === id);
+  if (!t) return;
+  confirmDialog('Удалить?', `${t.name} будет удалён.`, async () => {
+    try {
+      await API.del(`/api/teachers/${id}`);
+      await sync(); renderAdminAll();
+      toast('Удалён');
+    } catch (e) { toast(e.message); }
+  });
+};
+
+/* ---- ГРУППЫ ---- */
+function renderAdminGroups() {
+  const wrap = document.getElementById('atab-groups');
+  const groups = Store.groups();
+  const schedules = Store.schedules();
+  wrap.innerHTML = `
+    <div class="admin-toolbar">
+      <input type="text" id="groupSearch" placeholder="🔍 Поиск по названию" value="">
+      <button class="add-btn" id="addGroupBtn" title="Добавить">+</button>
+    </div>
+    <div class="section-hint">Удаление группы удалит её расписание</div>
+    <div id="groupsList"></div>`;
+
+  const renderList = (q) => {
+    const filtered = groups.filter(g => g.toLowerCase().includes(q.toLowerCase()));
+    const box = document.getElementById('groupsList');
+    box.innerHTML = filtered.length === 0
+      ? '<div class="empty"><div class="empty-ico-big">🏫</div>Групп нет<br><small>Нажмите + рядом с поиском</small></div>'
+      : filtered.map(g => groupCard(g, schedules[g])).join('');
+  };
+  renderList('');
+
+  document.getElementById('groupSearch').oninput = e => {
+    renderList(e.target.value);
+    const inp = document.getElementById('groupSearch');
+    if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+  };
+  document.getElementById('addGroupBtn').onclick = () => addGroupDialog();
+}
+
+function groupCard(g, sched) {
+  const cnt = sched ? Object.values(sched).reduce((a, arr) => a + arr.length, 0) : 0;
+  return `
+    <div class="admin-item">
+      <div class="ai-head">
+        <div class="avatar-sm" style="background:var(--accent);">${esc(g.split('-')[0])}</div>
+        <div class="ai-info">
+          <div class="ai-title">${esc(g)}</div>
+          <div class="ai-sub">${cnt} пар в расписании</div>
+        </div>
+      </div>
+      <div class="ai-actions">
+        <button class="act-btn primary" onclick="renameGroup('${esc(g)}')" title="Переименовать">✏️</button>
+        <button class="act-btn" onclick="openScheduleFor('${esc(g)}')" title="Расписание">📅</button>
+        <button class="act-btn danger" onclick="removeGroup('${esc(g)}')" title="Удалить">🗑</button>
+      </div>
+    </div>`;
+}
+
+function addGroupDialog() {
+  openEditModal({
+    title: '➕ Новая группа',
+    body: `<div class="field"><label>Название</label><input id="gNew" type="text" placeholder="ИС-5-1"></div>`,
+    saveText: 'Создать',
+    onSave: async () => {
+      const name = document.getElementById('gNew').value.trim().toUpperCase();
+      if (!name) { toast('Введите название'); return false; }
+      try {
+        await API.post('/api/groups', { name });
+        await sync(); renderAdminAll();
+        toast('Группа добавлена');
+        return true;
+      } catch (e) { toast(e.message); return false; }
+    }
+  });
+}
+
+window.renameGroup = (g) => {
+  openEditModal({
+    title: '✏️ Переименовать',
+    body: `<div class="field"><label>Новое название</label><input id="gNew" type="text" value="${esc(g)}"></div>`,
+    onSave: async () => {
+      const name = document.getElementById('gNew').value.trim().toUpperCase();
+      if (!name) { toast('Введите название'); return false; }
+      try {
+        await API.put(`/api/groups/${encodeURIComponent(g)}`, { newName: name });
+        await sync(); renderAdminAll(); await renderAll();
+        toast('Переименовано');
+        return true;
+      } catch (e) { toast(e.message); return false; }
+    }
+  });
+};
+
+window.removeGroup = (g) => {
+  confirmDialog('Удалить группу?', `${g} и её расписание будут удалены.`, async () => {
+    try {
+      await API.del(`/api/groups/${encodeURIComponent(g)}`);
+      await sync(); renderAdminAll();
+      toast('Удалено');
+    } catch (e) { toast(e.message); }
+  });
+};
+
+window.openScheduleFor = (g) => {
+  UI.adminGroup = g;
+  UI.adminTab = 'schedule';
+  document.querySelectorAll('#adminTabs .admin-tab').forEach(x =>
+    x.classList.toggle('active', x.dataset.atab === 'schedule'));
+  ['students','schedule','teachers','groups'].forEach(k =>
+    document.getElementById('atab-'+k).classList.toggle('hidden', k !== 'schedule'));
+  renderAdminSchedule();
+  updateFab();
+};
+
+/* ============ МОДАЛКИ ============ */
+function openEditModal({ title, body, saveText = 'Сохранить', onSave }) {
+  const box = document.getElementById('editModalBox');
+  box.innerHTML = `
+    <h3>${title}</h3>
+    ${body}
+    <div class="actions">
+      <button class="btn ghost" id="editCancel">Отмена</button>
+      <button class="btn" id="editSave">${saveText}</button>
+    </div>`;
+  document.getElementById('editModal').classList.remove('hidden');
+  document.getElementById('editCancel').onclick = () => document.getElementById('editModal').classList.add('hidden');
+  document.getElementById('editSave').onclick = async () => {
+    const ok = await onSave();
+    if (ok !== false) document.getElementById('editModal').classList.add('hidden');
+  };
+}
+
+function confirmDialog(title, text, onOk) {
+  const m = document.getElementById('confirmModal');
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmText').textContent = text;
+  m.classList.remove('hidden');
+  document.getElementById('confirmCancel').onclick = () => m.classList.add('hidden');
+  document.getElementById('confirmOk').onclick = async () => { m.classList.add('hidden'); await onOk(); };
+}
+
+function checkMaintenanceOverlay() {
+  const on = Store.maintenance();
+  const isEditor = Store.isCurrentEditor();
+  const adminOpen = !document.getElementById('adminOverlay').classList.contains('hidden');
+  const authOpen = !document.getElementById('authOverlay').classList.contains('hidden');
+  const overlay = document.getElementById('maintenanceOverlay');
+  if (on && !adminOpen && !isEditor && !authOpen) overlay.classList.remove('hidden');
+  else overlay.classList.add('hidden');
+}
+
+/* ============ ПОЛЛИНГ ============ */
+setInterval(async () => {
+  if (!API.token()) return;
+  try {
+    await sync();
+    if (UI.tab === 'schedule') renderSchedule();
+    renderHeader();
+    const adminOpen = !document.getElementById('adminOverlay').classList.contains('hidden');
+    if (adminOpen) renderAdminAll();
+    checkMaintenanceOverlay();
+  } catch (e) {
+    if (e.message.includes('401') || e.message.includes('Токен')) {
+      API.setToken(null);
+      await renderAll();
+    }
+  }
+}, 8000);
+
+/* ============ ГЛАВНЫЙ РЕНДЕР ============ */
+async function renderAll() {
+  applyTheme(localStorage.getItem('mgrk_theme_local') || 'black-blue');
+  renderAuth();
+  renderHeader();
+  renderDays();
+  renderSchedule();
+  renderProfile();
+  renderSettings();
+  checkMaintenanceOverlay();
+}
+
+async function boot() {
+  if (API.token()) {
+    try { await sync(); }
+    catch { API.setToken(null); }
+  }
+  await renderAll();
+}
+
+boot();
+</script>
+
+</body>
+</html>
