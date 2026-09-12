@@ -1,0 +1,6 @@
+node_modules/
+mgrk.db
+mgrk.db-shm
+mgrk.db-wal
+.env
+.DS_Store
